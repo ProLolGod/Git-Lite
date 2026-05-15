@@ -104,18 +104,19 @@ void restoreTree(const std::string &tree_sha, const std::string &base_path){
     if (!store.load(tree_sha,type,content)) throw std::runtime_error("Tree not found: " + tree_sha);
     if (type!="tree") throw std::runtime_error("Object is not a tree!");
     auto entries = parseTree(content);
+    std::cout << "Entries count: " << entries.size() << "\n";
     for(const auto& entry : entries){
-        std::string full_path = base_path;
-        if (base_path != ".") full_path += "/";
-        full_path += entry.name;
-        
+        fs::path full_path = fs::path(base_path) / entry.name;
         // extra 0 is seen in actual git cause of octal system or something
         if (entry.mode == "40000" || entry.mode == "040000"){
             fs::create_directories(full_path);
-            restoreTree(entry.sha, full_path);
+            restoreTree(entry.sha, full_path.string());
         }else{
-            restoreBlob(entry.sha, full_path);
+            restoreBlob(entry.sha, full_path.string());
         }
+        std::cout << entry.mode << " "
+          << entry.name << " "
+          << entry.sha << "\n";
     }
 }
 
@@ -126,9 +127,9 @@ void updateHEAD(const std::string &target){
     if (!f) throw std::runtime_error("Cannot update HEAD");
     
     if (fs::exists(branch_path)){
-        f << "ref: refs/heads/" << target;
+        f << "ref: refs/heads/" << target << '\n';
     }else{
-        f << target;
+        f << target << '\n';
     }
 
 // Git commits are reverse-linked:

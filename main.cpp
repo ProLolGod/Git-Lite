@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
             init_repo(".");
             std::cout << "Initialized empty git-lite repository\n";
         }
-        else if (cmd == "hash-object") {
+        else if (cmd == "hash-object") { // always stores while hashing object there is no just hash object option so no -w flag
             if (argc < 3) throw std::runtime_error("Usage: hash-object <file>");
             std::ifstream f(argv[2], std::ios::binary); //std::ios::binary to prevent newline translation on windows
             if (!f) throw std::runtime_error("Cannot open file");
