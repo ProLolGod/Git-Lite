@@ -15,6 +15,7 @@
 #include "commit.h"
 #include "add.h"
 #include "status.h"
+#include "diff.h"
 
 void init_repo(const std::string& path); // Declared so that compiler knows about its existance before main()
 
@@ -137,6 +138,8 @@ int main(int argc, char* argv[]) {
             add(argv[2]);
         }else if (cmd == "status") {
             status();
+        }else if (cmd == "diff") {
+            diff(argc, argv);
         }
         else {
             throw std::runtime_error("Unknown command: " + cmd);

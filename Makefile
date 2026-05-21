@@ -15,7 +15,8 @@ SRCS = \
 	src/add.cpp \
 	src/commit.cpp \
 	main.cpp \
-	src/status.cpp
+	src/status.cpp \
+	src/diff.cpp
 
 TARGET = git-lite
 
