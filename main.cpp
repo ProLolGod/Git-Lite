@@ -12,6 +12,9 @@
 #include <iomanip>
 #include "checkout.h"
 #include "branch.h"
+#include "commit.h"
+#include "add.h"
+#include "status.h"
 
 void init_repo(const std::string& path); // Declared so that compiler knows about its existance before main()
 
@@ -73,8 +76,9 @@ int main(int argc, char* argv[]) {
             }
         }
         else if (cmd == "write-tree") {
+            bool staged = (argc > 2 && std::string(argv[2]) == "--staged");
             ObjectStore store(".git");
-            std::cout << write_tree(store, ".") << "\n";
+            std::cout << write_tree(store, ".", staged) << "\n";
 //in the current version there is no garbage collection, so we are not maintaining and deleting away dangling trees
 
         }
@@ -117,6 +121,22 @@ int main(int argc, char* argv[]) {
             if (argc < 3) throw std::runtime_error("Usage: checkout <branch>");
             std::string target = argv[2];
             GitLite::checkout(target);
+        }
+        else if (cmd == "commit") {
+            if (argc < 4) throw std::runtime_error("Usage: commit -m <message>");
+            if (std::string(argv[2]) != "-m") throw std::runtime_error("Usage: commit -m <message>");
+            std::string message;
+            for (int i = 3; i < argc; ++i) {
+                if (i > 3) message += " ";
+                message += argv[i];
+            }
+            commit(message);
+        }
+        else if (cmd == "add") {
+            if (argc < 3) throw std::runtime_error("Usage: add <file|.>");
+            add(argv[2]);
+        }else if (cmd == "status") {
+            status();
         }
         else {
             throw std::runtime_error("Unknown command: " + cmd);

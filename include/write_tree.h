@@ -5,4 +5,4 @@
 
 namespace fs = std::filesystem;
 
-std::string write_tree(ObjectStore& store, const fs::path& dir);
+std::string write_tree(ObjectStore& store, const fs::path& dir,bool staged = false);

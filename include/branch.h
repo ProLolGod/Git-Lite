@@ -16,4 +16,6 @@ void branch(const std::vector<std::string>& args);
 // Helper: Get current branch name from HEAD (empty if detached)
 std::string get_current_branch();
 
+std::string read_head_commit();
+
 #endif // BRANCH_H

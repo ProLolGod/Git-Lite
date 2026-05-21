@@ -12,7 +12,10 @@ SRCS = \
 	src/log.cpp \
 	src/branch.cpp \
 	src/checkout.cpp \
-	main.cpp
+	src/add.cpp \
+	src/commit.cpp \
+	main.cpp \
+	src/status.cpp
 
 TARGET = git-lite
 
